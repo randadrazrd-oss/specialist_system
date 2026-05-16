@@ -5,8 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 export default function ProtectedRoute({ children, allowedRoles }) {
   const { currentUser, userProfile, userRole, loading } = useAuth();
 
-  console.log('[ProtectedRoute] loading:', loading, 'currentUser:', currentUser?.uid ?? 'null', 'userRole:', userRole, 'allowedRoles:', allowedRoles);
-
   // Still initialising auth — render nothing until we know who the user is
   if (loading) return null;
 
