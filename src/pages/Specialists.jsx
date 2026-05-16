@@ -39,13 +39,14 @@ export default function Specialists() {
   const [formData, setFormData] = useState({
     name: '',
     specialization: '',
-    workingDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+    workingDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday'],
     daySchedules: {
-      'Sunday': { start: '10:00', end: '21:00' },
-      'Monday': { start: '10:00', end: '21:00' },
-      'Tuesday': { start: '10:00', end: '21:00' },
-      'Wednesday': { start: '10:00', end: '21:00' },
-      'Thursday': { start: '10:00', end: '21:00' }
+      'Sunday': { start: '10:00', end: '20:00' },
+      'Monday': { start: '10:00', end: '20:00' },
+      'Tuesday': { start: '10:00', end: '20:00' },
+      'Wednesday': { start: '10:00', end: '20:00' },
+      'Thursday': { start: '10:00', end: '20:00' },
+      'Saturday': { start: '10:00', end: '20:00' }
     },
     availability: {}
   });
@@ -55,7 +56,8 @@ export default function Specialists() {
     { label: isRtl ? 'الإثنين' : 'Monday', val: 'Monday', short: isRtl ? 'ن' : 'M' },
     { label: isRtl ? 'الثلاثاء' : 'Tuesday', val: 'Tuesday', short: isRtl ? 'ث' : 'T' },
     { label: isRtl ? 'الأربعاء' : 'Wednesday', val: 'Wednesday', short: isRtl ? 'ر' : 'W' },
-    { label: isRtl ? 'الخميس' : 'Thursday', val: 'Thursday', short: isRtl ? 'خ' : 'T' }
+    { label: isRtl ? 'الخميس' : 'Thursday', val: 'Thursday', short: isRtl ? 'خ' : 'T' },
+    { label: isRtl ? 'السبت' : 'Saturday', val: 'Saturday', short: isRtl ? 'س' : 'S' }
   ];
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function Specialists() {
         return { ...prev, workingDays: newDays, availability: newAvailability };
       } else {
         const newDaySchedules = { ...prev.daySchedules };
-        const schedule = newDaySchedules[dayVal] || { start: '10:00', end: '21:00' };
+        const schedule = { start: '10:00', end: '20:00' };
         if (!newDaySchedules[dayVal]) {
           newDaySchedules[dayVal] = schedule;
         }
@@ -104,7 +106,7 @@ export default function Specialists() {
         // Also generate clinical slots for the newly added day
         const newAvailability = {
           ...prev.availability,
-          [dayVal]: generateDailySlots(schedule.start, schedule.end, 45).filter(s => s.type === 'session').map(s => s.time)
+          [dayVal]: generateDailySlots('10:00', '20:00', 45).filter(s => s.type === 'session').map(s => s.time)
         };
 
         return {
@@ -173,13 +175,14 @@ export default function Specialists() {
 
   const openAddModal = () => {
     setEditingId(null);
-    const defaultDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+    const defaultDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday'];
     const defaultSchedules = {
-      'Sunday': { start: '10:00', end: '21:00' },
-      'Monday': { start: '10:00', end: '21:00' },
-      'Tuesday': { start: '10:00', end: '21:00' },
-      'Wednesday': { start: '10:00', end: '21:00' },
-      'Thursday': { start: '10:00', end: '21:00' }
+      'Sunday': { start: '10:00', end: '20:00' },
+      'Monday': { start: '10:00', end: '20:00' },
+      'Tuesday': { start: '10:00', end: '20:00' },
+      'Wednesday': { start: '10:00', end: '20:00' },
+      'Thursday': { start: '10:00', end: '20:00' },
+      'Saturday': { start: '10:00', end: '20:00' }
     };
 
     // Pre-calculate baseline slots
@@ -202,7 +205,7 @@ export default function Specialists() {
     setEditingId(spec.id);
 
     const legacyStart = spec.startHour || '10:00';
-    const legacyEnd = spec.endHour || '21:00';
+    const legacyEnd = spec.endHour || '20:00';
     const loadedDays = spec.workingDays || [];
     const newDaySchedules = spec.daySchedules ? { ...spec.daySchedules } : {};
 
@@ -216,8 +219,7 @@ export default function Specialists() {
     // Ensure all active days have generated slots avoiding complete emptiness on legacy/broken records
     loadedDays.forEach(day => {
       if (!loadedAvailability[day]) {
-        const dSched = newDaySchedules[day] || { start: '10:00', end: '21:00' };
-        loadedAvailability[day] = generateDailySlots(dSched.start, dSched.end, 45).filter(s => s.type === 'session').map(s => s.time);
+        loadedAvailability[day] = generateDailySlots('10:00', '20:00', 45).filter(s => s.type === 'session').map(s => s.time);
       }
     });
 
@@ -560,34 +562,18 @@ export default function Specialists() {
                   <div className="space-y-6">
                     {formData.workingDays.map(day => (
                       <div key={day} className="bg-white/80 backdrop-blur rounded-[2rem] p-6 shadow-sm border border-white transition-all hover:shadow-xl hover:bg-white animate-in zoom-in-95 duration-300">
-                        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                        <div className="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-4">
                           <div className="flex flex-wrap items-center gap-4">
                             <span className="font-black text-slate-900 uppercase tracking-widest text-sm min-w-[90px]">
                               {isRtl ? availableDays.find(d => d.val === day)?.label : day}
                             </span>
-                            <div className="flex flex-wrap items-center gap-2 bg-white/50 p-1.5 rounded-xl border border-orange-100 shadow-sm">
-                              <input
-                                title="Start Time"
-                                type="time"
-                                value={formData.daySchedules?.[day]?.start || '09:00'}
-                                onChange={(e) => handleDayTimeChange(day, 'start', e.target.value)}
-                                className="bg-white text-slate-900 border-2 border-transparent focus:border-primary rounded-lg px-2 py-1.5 text-xs font-black outline-none transition-all w-[110px]"
-                              />
-                              <span className="text-gray-300 font-black text-[10px]">TO</span>
-                              <input
-                                title="End Time"
-                                type="time"
-                                value={formData.daySchedules?.[day]?.end || '15:00'}
-                                onChange={(e) => handleDayTimeChange(day, 'end', e.target.value)}
-                                className="bg-white text-slate-900 border-2 border-transparent focus:border-secondary rounded-lg px-2 py-1.5 text-xs font-black outline-none transition-all w-[110px]"
-                              />
-                            </div>
+                            <span className="text-gray-400 font-bold text-xs uppercase tracking-widest">10:00 AM - 08:00 PM</span>
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 mt-4">
-                          {generateDailySlots(formData.daySchedules?.[day]?.start || '10:00', formData.daySchedules?.[day]?.end || '21:00', 45).map((slotObj, idx) => (
+                        <div className="flex flex-wrap gap-2">
+                          {generateDailySlots('10:00', '20:00', 45).map((slotObj, idx) => (
                             <div key={`${day}-${slotObj.time}-${idx}`} className={`border-2 rounded-xl px-4 py-2 flex items-center gap-3 transition-all ${slotObj.type === 'break' ? 'bg-orange-50 border-orange-200 text-orange-700' : 'bg-white border-blue-100 text-slate-900 shadow-sm hover:border-primary'}`}>
-                              {slotObj.type === 'break' && <span className="text-[10px] font-black uppercase tracking-widest"><Coffee size={12} className="inline mr-1"/> Break</span>}
+                              {slotObj.type === 'break' && <span className="text-[10px] font-black uppercase tracking-widest"><Coffee size={12} className="inline mr-1"/> {t('break')}</span>}
                               <span className="text-xs font-black">{slotObj.time}</span>
                             </div>
                           ))}

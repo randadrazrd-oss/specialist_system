@@ -206,5 +206,10 @@
   "no_activity_recorded": "No clinical activity recorded for this period.",
   "clinical_insights": "Clinical Insights",
   "clinical_occupancy": "Clinical Occupancy",
-  "pending_reports": "Pending Reports"
+  "pending_reports": "Pending Reports",
+  "live": "Live",
+  "recurring": "Recurring",
+  "action_req": "Action Req.",
+  "saturday": "Saturday",
+  "break": "Break"
 }

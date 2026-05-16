@@ -383,7 +383,7 @@ export default function Dashboard() {
                     <p className="text-2xl font-black text-white">{stats.totalBookedToday}</p>
                   </div>
                   <div className="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest mb-1 animate-pulse">
-                    Action Req.
+                    {t('action_req')}
                   </div>
                 </div>
               </div>
@@ -443,7 +443,7 @@ export default function Dashboard() {
                             {isLive && (
                               <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/20 rounded-lg animate-pulse">
                                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-white">Live</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-white">{t('live')}</span>
                               </div>
                             )}
                           </div>
@@ -473,7 +473,7 @@ export default function Dashboard() {
 
                           return (
                             <div key={slot.time} className={`p-6 rounded-[2rem] border transition-all group/card relative overflow-hidden ${isCompleted ? 'bg-emerald-50/30 border-emerald-100' : 'bg-white border-gray-100 shadow-sm hover:border-primary/30 hover:shadow-xl'}`}>
-                              <div className="absolute top-2 right-2 p-2 opacity-0 group-hover/card:opacity-100 transition-all transform scale-75 group-hover/card:scale-100 flex gap-2">
+                              <div className={`absolute top-2 ${isRtl ? 'left-2' : 'right-2'} p-2 opacity-0 group-hover/card:opacity-100 transition-all transform scale-75 group-hover/card:scale-100 flex gap-2`}>
                                 <Link
                                   to={`/children/${slot.session.childId}`}
                                   className="p-2 text-primary hover:text-white hover:bg-primary bg-orange-50 rounded-xl transition-colors"
@@ -512,7 +512,7 @@ export default function Dashboard() {
                                 {slot.session.childName}
                                 {slot.session.sessionType === 'recurring' && (
                                   <span className="text-[8px] bg-indigo-50 text-indigo-500 px-2 py-0.5 rounded uppercase font-black tracking-widest border border-indigo-100 shrink-0">
-                                    Recurring
+                                    {t('recurring')}
                                   </span>
                                 )}
                               </Link>

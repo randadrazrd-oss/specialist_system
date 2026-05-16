@@ -209,5 +209,10 @@
   "no_activity_recorded": "لم يتم تسجيل أي نشاط سريري لهذه الفترة.",
   "clinical_insights": "الرؤى السريرية",
   "clinical_occupancy": "نسبة الإشغال",
-  "pending_reports": "تقارير معلقة"
+  "pending_reports": "تقارير معلقة",
+  "live": "مباشر",
+  "recurring": "متكرر",
+  "action_req": "مطلوب إجراء",
+  "saturday": "السبت",
+  "break": "استراحة"
 }
