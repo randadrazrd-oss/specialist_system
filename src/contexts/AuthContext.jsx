@@ -22,13 +22,15 @@ export const AuthProvider = ({ children }) => {
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         return onAuthStateChanged(auth, async (user) => {
+          console.log('[Auth] onAuthStateChanged fired, user:', user?.uid ?? 'null');
           setCurrentUser(user);
           if (user) {
             try {
               const profile = await getUserProfile(user.uid);
+              console.log('[Auth] getUserProfile result:', profile);
               setUserProfile(profile);
             } catch (err) {
-              console.error('Failed to load user profile:', err);
+              console.error('[Auth] getUserProfile error:', err);
               setUserProfile(null);
             }
           } else {
