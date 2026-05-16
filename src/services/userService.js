@@ -51,10 +51,16 @@ export const createUserAccount = async ({ email, password, displayName, role, sp
  * Fetch a single user profile from Firestore by UID
  */
 export const getUserProfile = async (uid) => {
-  const ref = doc(db, 'users', uid);
-  const snap = await getDocFromServer(ref);
-  if (snap.exists()) return { id: snap.id, ...snap.data() };
-  return null;
+  try {
+    const ref = doc(db, 'users', uid);
+    const snap = await getDocFromServer(ref);
+    console.log('[getUserProfile] exists:', snap.exists(), 'data:', snap.data());
+    if (snap.exists()) return { id: snap.id, ...snap.data() };
+    return null;
+  } catch (e) {
+    console.error('[getUserProfile] EXCEPTION:', e.code, e.message);
+    throw e;
+  }
 };
 
 /**
