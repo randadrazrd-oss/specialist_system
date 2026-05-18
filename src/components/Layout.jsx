@@ -7,7 +7,6 @@ import NotificationCenter from './NotificationCenter';
 import NotificationPoller from './NotificationPoller';
 
 export default function Layout({ children }) {
-  console.log('DEBUG: useTranslation value:', typeof useTranslation);
   const { t, lang, toggleLanguage } = useTranslation();
   const { currentUser, userProfile, isAdmin, isSpecialist } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);

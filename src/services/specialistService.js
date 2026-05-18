@@ -34,7 +34,6 @@ export const getSpecialists = async () => {
 };
 
 export const addSpecialist = async (specialistData) => {
-  console.log("--> Attempting to add new specialist:", specialistData);
   try {
     if (!specialistData.name || !specialistData.specialization) {
       throw new Error("Specialist name and specialization are required");
@@ -44,7 +43,6 @@ export const addSpecialist = async (specialistData) => {
       await delay(300);
       const newSpec = { ...specialistData, id: 's' + Date.now() };
       mockSpecialists.push(newSpec);
-      console.log("--> [MOCK] Successfully added specialist:", newSpec);
       return newSpec;
     }
     
@@ -53,10 +51,8 @@ export const addSpecialist = async (specialistData) => {
         availability: specialistData.availability || {}
     };
     
-    console.log(`--> Sending request to Firebase Firestore (collection: ${COLLECTION_NAME})...`);
     const docRef = await addDoc(collection(db, COLLECTION_NAME), finalData);
     
-    console.log("--> [SUCCESS] Specialist saved to Firestore with ID:", docRef.id);
     return { id: docRef.id, ...finalData };
   } catch (error) {
     console.error("--> [ERROR] Failed to save specialist to Firestore:", error);
