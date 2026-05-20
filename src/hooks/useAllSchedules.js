@@ -28,7 +28,7 @@ export const useAllSchedules = (specialists, dateStr) => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayName = days[dayIndex];
 
-        let baseSlots = generateDailySlots('10:00', '21:00', 45);
+        let baseSlots = generateDailySlots('10:30', '21:00', 45);
         if (spec.daySchedules && spec.daySchedules[dayName]) {
             baseSlots = generateDailySlots(spec.daySchedules[dayName].start, spec.daySchedules[dayName].end, 45);
         }

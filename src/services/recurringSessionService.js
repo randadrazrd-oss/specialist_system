@@ -25,9 +25,9 @@ export const createRecurringSessionTemplate = async (templateData) => {
   };
 
   await runTransaction(db, async (transaction) => {
-    // 1. Fetch all day documents for the next 8 weeks
+    // 1. Fetch all day documents for 1 week
     const dayRefs = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 1; i++) {
       const sessionDate = format(addWeeks(startDateObj, i), 'yyyy-MM-dd');
       dayRefs.push({
         date: sessionDate,
@@ -50,8 +50,8 @@ export const createRecurringSessionTemplate = async (templateData) => {
     // Write template
     transaction.set(recurringRef, safe(newTemplate));
 
-    // Write 8 occurrences
-    for (let i = 0; i < 8; i++) {
+    // Write 1 occurrence
+    for (let i = 0; i < 1; i++) {
       const sessionDate = dayRefs[i].date;
       const dayRef = dayRefs[i].ref;
       const dayDocSnap = dayDocs[i];

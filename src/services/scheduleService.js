@@ -21,7 +21,7 @@ export const fetchOrCreateDaySchedule = async (specialistId, dateStr) => {
   }
 
   // Get start/end hours from specialist template
-  let baseSlots = generateDailySlots('10:00', '21:00', 45);
+  let baseSlots = generateDailySlots('10:30', '21:00', 45);
   const specDoc = await getDoc(doc(db, 'specialists', specialistId));
   if (specDoc.exists()) {
       const specialist = specDoc.data();

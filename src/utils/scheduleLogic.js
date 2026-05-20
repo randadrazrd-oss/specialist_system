@@ -34,5 +34,16 @@ export function generateDailySlots(startHour, endHour, intervalMinutes = 45) {
     }
   }
 
+  // Add available slot at 9:00 PM (21:00) ending at 9:45 PM (21:45) to cover 9 PM shift requirement
+  if (startHour === '10:30' && (endHour === '21:00' || endHour === '21:45' || endHour === '22:00')) {
+    if (!slots.some(s => s.time === '21:00')) {
+      slots.push({
+        time: '21:00',
+        type: 'session',
+        endTime: '21:45'
+      });
+    }
+  }
+
   return slots;
 }

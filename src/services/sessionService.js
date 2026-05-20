@@ -53,7 +53,7 @@ export const fetchDailySchedule = async (targetDate) => {
   const sessionsList = sessSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
   const grid = availableSpecs.map(spec => {
-    const slots = generateDailySlots(spec.startHour || '10:00', spec.endHour || '21:00', 45);
+    const slots = generateDailySlots(spec.startHour || '10:30', spec.endHour || '21:00', 45);
     return {
       specialistId: spec.id,
       specialistName: spec.name,

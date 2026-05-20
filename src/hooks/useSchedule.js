@@ -24,7 +24,7 @@ export const useSchedule = (specialistId, dateStr) => {
       try {
         setLoading(true);
         
-        let baseSlots = generateDailySlots('10:00', '21:00', 45);
+        let baseSlots = generateDailySlots('10:30', '21:00', 45);
         const specDoc = await getDoc(doc(db, 'specialists', specialistId));
         if (specDoc.exists()) {
            const sData = specDoc.data();

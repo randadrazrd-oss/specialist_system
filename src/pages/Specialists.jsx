@@ -41,12 +41,12 @@ export default function Specialists() {
     specialization: '',
     workingDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday'],
     daySchedules: {
-      'Sunday': { start: '10:00', end: '20:00' },
-      'Monday': { start: '10:00', end: '20:00' },
-      'Tuesday': { start: '10:00', end: '20:00' },
-      'Wednesday': { start: '10:00', end: '20:00' },
-      'Thursday': { start: '10:00', end: '20:00' },
-      'Saturday': { start: '10:00', end: '20:00' }
+      'Sunday': { start: '10:30', end: '21:00' },
+      'Monday': { start: '10:30', end: '21:00' },
+      'Tuesday': { start: '10:30', end: '21:00' },
+      'Wednesday': { start: '10:30', end: '21:00' },
+      'Thursday': { start: '10:30', end: '21:00' },
+      'Saturday': { start: '10:30', end: '21:00' }
     },
     availability: {}
   });
@@ -98,7 +98,7 @@ export default function Specialists() {
         return { ...prev, workingDays: newDays, availability: newAvailability };
       } else {
         const newDaySchedules = { ...prev.daySchedules };
-        const schedule = { start: '10:00', end: '20:00' };
+        const schedule = { start: '10:30', end: '21:00' };
         if (!newDaySchedules[dayVal]) {
           newDaySchedules[dayVal] = schedule;
         }
@@ -106,7 +106,7 @@ export default function Specialists() {
         // Also generate clinical slots for the newly added day
         const newAvailability = {
           ...prev.availability,
-          [dayVal]: generateDailySlots('10:00', '20:00', 45).filter(s => s.type === 'session').map(s => s.time)
+          [dayVal]: generateDailySlots('10:30', '21:00', 45).filter(s => s.type === 'session').map(s => s.time)
         };
 
         return {
@@ -124,7 +124,7 @@ export default function Specialists() {
       const newDaySchedules = {
         ...prev.daySchedules,
         [day]: {
-          ...prev.daySchedules[day] || { start: '10:00', end: '21:00' },
+          ...prev.daySchedules[day] || { start: '10:30', end: '21:00' },
           [field]: value
         }
       };
@@ -177,12 +177,12 @@ export default function Specialists() {
     setEditingId(null);
     const defaultDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday'];
     const defaultSchedules = {
-      'Sunday': { start: '10:00', end: '20:00' },
-      'Monday': { start: '10:00', end: '20:00' },
-      'Tuesday': { start: '10:00', end: '20:00' },
-      'Wednesday': { start: '10:00', end: '20:00' },
-      'Thursday': { start: '10:00', end: '20:00' },
-      'Saturday': { start: '10:00', end: '20:00' }
+      'Sunday': { start: '10:30', end: '21:00' },
+      'Monday': { start: '10:30', end: '21:00' },
+      'Tuesday': { start: '10:30', end: '21:00' },
+      'Wednesday': { start: '10:30', end: '21:00' },
+      'Thursday': { start: '10:30', end: '21:00' },
+      'Saturday': { start: '10:30', end: '21:00' }
     };
 
     // Pre-calculate baseline slots
@@ -204,8 +204,8 @@ export default function Specialists() {
   const openEditModal = (spec) => {
     setEditingId(spec.id);
 
-    const legacyStart = spec.startHour || '10:00';
-    const legacyEnd = spec.endHour || '20:00';
+    const legacyStart = spec.startHour || '10:30';
+    const legacyEnd = spec.endHour || '21:00';
     const loadedDays = spec.workingDays || [];
     const newDaySchedules = spec.daySchedules ? { ...spec.daySchedules } : {};
 
@@ -219,7 +219,7 @@ export default function Specialists() {
     // Ensure all active days have generated slots avoiding complete emptiness on legacy/broken records
     loadedDays.forEach(day => {
       if (!loadedAvailability[day]) {
-        loadedAvailability[day] = generateDailySlots('10:00', '20:00', 45).filter(s => s.type === 'session').map(s => s.time);
+        loadedAvailability[day] = generateDailySlots('10:30', '21:00', 45).filter(s => s.type === 'session').map(s => s.time);
       }
     });
 
@@ -567,11 +567,11 @@ export default function Specialists() {
                             <span className="font-black text-slate-900 uppercase tracking-widest text-sm min-w-[90px]">
                               {isRtl ? availableDays.find(d => d.val === day)?.label : day}
                             </span>
-                            <span className="text-gray-400 font-bold text-xs uppercase tracking-widest">10:00 AM - 08:00 PM</span>
+                            <span className="text-gray-400 font-bold text-xs uppercase tracking-widest">10:30 AM - 09:00 PM</span>
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {generateDailySlots('10:00', '20:00', 45).map((slotObj, idx) => (
+                          {generateDailySlots('10:30', '21:00', 45).map((slotObj, idx) => (
                             <div key={`${day}-${slotObj.time}-${idx}`} className={`border-2 rounded-xl px-4 py-2 flex items-center gap-3 transition-all ${slotObj.type === 'break' ? 'bg-orange-50 border-orange-200 text-orange-700' : 'bg-white border-blue-100 text-slate-900 shadow-sm hover:border-primary'}`}>
                               {slotObj.type === 'break' && <span className="text-[10px] font-black uppercase tracking-widest"><Coffee size={12} className="inline mr-1"/> {t('break')}</span>}
                               <span className="text-xs font-black">{slotObj.time}</span>
